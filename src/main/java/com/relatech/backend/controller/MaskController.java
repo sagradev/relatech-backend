@@ -11,8 +11,7 @@ import java.util.List;
 @RequestMapping("/api/masks")
 @CrossOrigin(origins = {
         "http://localhost:5173",
-        "https://relatech-frontend-lxsr-git-main-gustavos-projects-28efcac0.vercel.app",
-        "https://relatech-frontend.vercel.app"
+        "https://relatech.vercel.app"
 })
 public class MaskController {
 
