@@ -6,30 +6,37 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
-
-import static io.jsonwebtoken.Claims.EXPIRATION;
 
 @Component
 public class JwtUtil {
 
-    private static final String SECRET = "relatech-secret-key-2024-muito-segura-256bits!!";
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
+    private static final String SECRET = "relatech2024chave-secreta-minimo-256bits-segura!!xpto";
+    private static final long EXPIRATION = 1000L * 60 * 60 * 24; // 24 horas
 
-    private SecretKey getKey(){
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
+    private SecretKey getKey() {
+        byte[] keyBytes = SECRET.getBytes(StandardCharsets.UTF_8);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(String email){
-        return Jwts.builder()
-                .subject(email)
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(getKey())
-                .compact();
+    public String generateToken(String email) {
+        try {
+            SecretKey key = getKey();
+            System.out.println(">>> Chave gerada com sucesso");
+            return Jwts.builder()
+                    .subject(email)
+                    .issuedAt(new Date())
+                    .expiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                    .signWith(key)
+                    .compact();
+        } catch (Exception e) {
+            System.out.println(">>> ERRO ao gerar token: " + e.getMessage());
+            throw e;
+        }
     }
 
-    public String extractEmail(String token){
+    public String extractEmail(String token) {
         return getClaims(token).getSubject();
     }
 
@@ -40,7 +47,6 @@ public class JwtUtil {
             return false;
         }
     }
-
 
     private Claims getClaims(String token) {
         return Jwts.parser()

@@ -33,15 +33,16 @@ public class AuthService {
         User user = new User();
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-        // Nunca salva a senha pura — sempre criptografada
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);
+        System.out.println(">>> Usuário salvo: " + user.getEmail());
 
         String token = jwtUtil.generateToken(user.getEmail());
+        System.out.println(">>> Token gerado: " + token);
+
         return new AuthResponse(token, user.getName(), user.getEmail());
     }
-
     // Login
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())

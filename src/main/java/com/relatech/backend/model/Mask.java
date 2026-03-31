@@ -24,6 +24,19 @@ public class Mask {
     @JoinColumn(name = "mask_id")
     private List<Field> fields;
 
+    // Vínculo com o usuário dono da máscara
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }
