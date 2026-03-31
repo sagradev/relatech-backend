@@ -3,6 +3,7 @@ package com.relatech.backend.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -12,11 +13,14 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET = "relatech2024chave-secreta-minimo-256bits-segura!!xpto";
-    private static final long EXPIRATION = 1000L * 60 * 60 * 24; // 24 horas
+
+    @Value("${jwt.secret}")
+    private String secret;
+
+    private static final long EXPIRATION = 1000L * 60 * 60 * 24;
 
     private SecretKey getKey() {
-        byte[] keyBytes = SECRET.getBytes(StandardCharsets.UTF_8);
+        byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
