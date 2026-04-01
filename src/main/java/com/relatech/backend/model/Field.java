@@ -56,9 +56,9 @@ public class Field {
         this.id = id;
     }
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "field_options", joinColumns = @JoinColumn(name = "field_id"))
     @Column(name = "option_value")
-    private java.util.List<String> options;
+    private List<String> options;
 
 }

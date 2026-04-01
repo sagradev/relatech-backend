@@ -20,7 +20,7 @@ public class Mask {
     @Column(columnDefinition =  "TEXT")
     private String template;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "mask_id")
     private List<Field> fields;
 
