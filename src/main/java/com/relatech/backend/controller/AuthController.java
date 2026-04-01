@@ -6,8 +6,6 @@ import com.relatech.backend.dto.RegisterRequest;
 import com.relatech.backend.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -20,11 +18,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request,
-                                   HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "*");
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        System.out.println(">>> Login recebido para: " + request.getEmail());
         try {
             AuthResponse authResponse = authService.login(request);
             return ResponseEntity.ok(authResponse);
@@ -34,24 +29,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request,
-                                      HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "*");
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
             AuthResponse authResponse = authService.register(request);
             return ResponseEntity.status(201).body(authResponse);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
-
-    @RequestMapping(method = RequestMethod.OPTIONS)
-    public ResponseEntity<?> options(HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "*");
-        return ResponseEntity.ok().build();
     }
 }
