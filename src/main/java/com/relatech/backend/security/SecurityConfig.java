@@ -60,8 +60,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList(
+        config.setAllowedOriginPatterns(List.of(
                 "https://relatech.vercel.app",
+                "https://*.vercel.app",
                 "http://localhost:5173"
         ));
         config.setAllowedMethods(Arrays.asList(
